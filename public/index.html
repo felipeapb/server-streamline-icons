@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <title>Streamline Icons Ultimate</title>
+
+    <link rel='stylesheet prefetch' href='vendor/bootswatch/3.2.0/flatly/bootstrap.min.css'>
+
+    <link rel="stylesheet" href="sprite/sprite.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body ng-app="appSliu" ng-controller="ctrlMain">
+
+<div class="container">
+    <h1>{{ app.title }}</h1>
+</div>
+<div id="svg-selected-preview-placeholder">
+    <div id="svg-selected-preview">
+        <div class="container">
+            <br>
+
+            <div class="row row-toolbar">
+                <div class="col-sm-11">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <label for="inputQueryGroups">filter groups</label>
+                        </span>
+                        <input id="inputQueryGroups" class="form-control" type="text" placeholder="filter groups"
+                               ng-model="model.query.groups">
+                    </div>
+
+                    <br>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <label for="inputQueryIcons">filter icons</label>
+                        </span>
+                        <input id="inputQueryIcons" class="form-control" type="text" placeholder="filter icons"
+                               ng-model="model.query.icons">
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <a href="" class="btn btn-primary btn-block" ng-click="toggleShow()">
+                        <span class="glyphicon glyphicon-plus" ng-show="!model.iconGroupsShow"></span>
+                        <span class="glyphicon glyphicon-minus" ng-show="model.iconGroupsShow"></span>
+                    </a>
+
+                    <br>
+
+                    <select ng-model="model.iconSize">
+                        <option value="svg-icon-preview-24">24px</option>
+                        <option value="svg-icon-preview-32">32px</option>
+                        <option value="svg-icon-preview-48">48px</option>
+                        <option value="svg-icon-preview-64">64px</option>
+                        <option value="svg-icon-preview-128">128px</option>
+                    </select>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span>selected icons [{{ model.selectedIcons.length }}]</span>
+                    <span class="pull-right">
+                        <a href="" class="btn btn-default btn-xs" ng-click="exportSelectedIcons()"
+                           ng-disabled="!model.selectedIcons.length">
+                            <span>export</span>
+                        </a>
+                        <a href="" class="btn btn-default btn-xs" ng-click="importSelectedIcons()">
+                            <span>import</span>
+                        </a>
+                        <a href="" class="btn btn-danger btn-xs" ng-click="clearSelectedIcons()"
+                           ng-disabled="!model.selectedIcons.length">
+                            <span>clear</span>
+                        </a>
+                        <a href="" class="btn btn-success btn-xs" ng-click="generateSelectedIcons()"
+                           ng-disabled="!model.selectedIcons.length">
+                            <span>generate<span class="hidden-md-down"> & download</span></span>
+                        </a>
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <div class="svg-selected-preview-icons-wrapper">
+                        <div class="svg-selected-preview-icons">
+                            <div class="svg-selected-preview-icon-wrapper"
+                                 ng-repeat="icon in model.selectedIcons track by $index">
+                                <i class="svg-line--SVG--{{ icon.group }}--{{ icon.name }}"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+
+    <br>
+
+    <div class="{{ model.iconSize }}">
+        <div class="panel panel-default"
+             ng-repeat="iconGroup in (iconGroupsFiltered = (model.iconGroups | filter:model.query.groups)) track by $index"
+             ng-show="iconsFiltered.length">
+            <div class="panel-heading" ng-click="iconGroup.show = !iconGroup.show">
+                <h2 class="clearfix">
+                    <span>{{ iconGroup.name }}</span>
+
+                    <span class="pull-right">
+                        <span class="badge">{{ iconsFiltered.length }} | {{ iconGroup.icons.length }}</span>
+
+                        &nbsp;
+
+                        <a href="" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-plus" ng-show="!iconGroup.show"></span>
+                            <span class="glyphicon glyphicon-minus" ng-show="iconGroup.show"></span>
+                        </a>
+                    </span>
+                </h2>
+            </div>
+            <div class="panel-body" ng-show="iconGroup.show">
+                <a class="svg-icon-preview{{ icon.selected ? ' selected' : '' }}" href="" title="{{ icon.name }}"
+                   ng-repeat="icon in (iconsFiltered = (iconGroup.icons | filter:model.query.icons)) track by $index"
+                   ng-click="toggleSelected(iconGroup, icon, $index, $event)">
+                    <i class="svg-{{ icon.selected ? 'filled' : 'line' }}--SVG--{{ icon.group }}--{{ icon.name }}"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src='vendor/underscore/underscore-min.js'></script>
+<script src='vendor/angularjs/1.5.0/angular.min.js'></script>
+<script src="js/app.js"></script>
+</body>
+</html>
