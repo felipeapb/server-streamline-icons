@@ -38,4 +38,4 @@ Currently there is no API, sorry.
 
 ## License
 
-MIT © [Yves Riedener](https://yves.reecube.com)
+MIT © [Yves Riedener](http://yves.reecube.com)
