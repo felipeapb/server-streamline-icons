@@ -73,6 +73,9 @@ core.fnc.checkSources((errorCheckSources) => {
 
                                     res.sendStatus(500);
                                 } else {
+                                    // export user-data-config into a json-file and add it to the generated zip-file
+                                    zip.file('data.json', JSON.stringify(req.body));
+
                                     core.node.fs.writeFile(
                                         core.node.path.join(core.config.generatedZip, fileNameGenerated),
                                         zip.generate({
